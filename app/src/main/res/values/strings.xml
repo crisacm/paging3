@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">XmlPaging3</string>
     <string name="action_reload">Reload</string>
+    <string name="api">API</string>
+    <string name="local">Local</string>
+    <string name="api_plus_local">API + Local</string>
+    <string name="not_are_data_to_show">Not are data to show</string>
 </resources>

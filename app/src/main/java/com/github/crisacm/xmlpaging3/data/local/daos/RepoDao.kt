@@ -16,6 +16,9 @@ interface RepoDao {
   @Query("DELETE FROM repos")
   suspend fun clearRepos()
 
-   @Query("SELECT * FROM repos WHERE username = :username")
-   fun getAllBy(username: String): PagingSource<Int, RepoEntity>
+  @Query("SELECT * FROM repos WHERE username = :username ORDER BY id ASC LIMIT :limit OFFSET :offset")
+  fun getAllBy(username: String, limit: Int, offset: Int): List<RepoEntity>
+
+  @Query("SELECT * FROM repos WHERE username = :username")
+  fun getAllByPS(username: String): PagingSource<Int, RepoEntity>
 }

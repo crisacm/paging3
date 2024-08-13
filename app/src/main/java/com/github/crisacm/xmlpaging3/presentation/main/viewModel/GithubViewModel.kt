@@ -4,8 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import androidx.paging.map
-import com.github.crisacm.xmlpaging3.data.mapper.toDomain
 import com.github.crisacm.xmlpaging3.domain.model.Repo
 import com.github.crisacm.xmlpaging3.domain.repo.GithubRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -24,6 +22,9 @@ class GithubViewModel @Inject constructor(
 
   fun getRepos(username: String): Flow<PagingData<Repo>> =
     repository.getReposByUsername(username)
-      .map { it.map { repo -> repo.toDomain() } }
+      .cachedIn(viewModelScope)
+
+  fun fetchGetRepos(username: String): Flow<PagingData<Repo>> =
+    repository.fetchReposByUsername(username)
       .cachedIn(viewModelScope)
 }

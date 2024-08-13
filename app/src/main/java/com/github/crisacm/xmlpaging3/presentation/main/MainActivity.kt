@@ -4,11 +4,14 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView.OnQueryTextListener
 import androidx.core.view.MenuProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.paging.PagingData
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.crisacm.xmlpaging3.R
@@ -53,8 +56,8 @@ class MainActivity : AppCompatActivity() {
 
       override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
         if (menuItem.itemId == R.id.action_reload) {
-          Toast.makeText(this@MainActivity, "Fetching data", Toast.LENGTH_SHORT).show()
-          searchByUsername("google")
+          Toast.makeText(this@MainActivity, "Reload data", Toast.LENGTH_SHORT).show()
+          searchByUsername(binding.searchView.query.toString())
         }
 
         return true
@@ -73,15 +76,52 @@ class MainActivity : AppCompatActivity() {
       footer = ReposLoadStateAdapter { adapter.retry() }
     )
 
-    searchByUsername("crisacm")
+    binding.buttonToggleGroup.addOnButtonCheckedListener { _, _, isChecked ->
+      if (isChecked) clearData()
+    }
+
+    binding.searchView.setOnQueryTextListener(object : OnQueryTextListener {
+      override fun onQueryTextSubmit(query: String?): Boolean {
+        searchByUsername(query.toString())
+        return true
+      }
+
+      override fun onQueryTextChange(newText: String?): Boolean = true
+    })
+  }
+
+  private fun clearData() {
+    lifecycleScope.launch {
+      binding.textEmpty.visibility = View.VISIBLE
+      adapter.submitData(PagingData.empty())
+    }
   }
 
   private fun searchByUsername(username: String) {
     queryJob?.cancel()
     queryJob = lifecycleScope.launch {
-        viewModel.getRepos(username).distinctUntilChanged().collectLatest {
+      adapter.submitData(PagingData.empty())
+
+      if (binding.buttonRemote.isChecked) {
+        viewModel.fetchRepos(username).distinctUntilChanged().collectLatest {
           adapter.submitData(it)
+          binding.textEmpty.visibility = if (adapter.snapshot().isEmpty()) View.VISIBLE else View.GONE
         }
       }
+
+      if (binding.buttonLocal.isChecked) {
+        viewModel.getRepos(username).distinctUntilChanged().collectLatest {
+          adapter.submitData(it)
+          binding.textEmpty.visibility = if (adapter.snapshot().isEmpty()) View.VISIBLE else View.GONE
+        }
+      }
+
+      if (binding.buttonRemoteLocal.isChecked) {
+        viewModel.fetchGetRepos(username).distinctUntilChanged().collectLatest {
+          adapter.submitData(it)
+          binding.textEmpty.visibility = if (adapter.snapshot().isEmpty()) View.VISIBLE else View.GONE
+        }
+      }
+    }
   }
 }
