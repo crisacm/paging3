@@ -1,6 +1,7 @@
 package com.github.crisacm.xmlpaging3.presentation.main
 
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -11,7 +12,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView.OnQueryTextListener
 import androidx.core.view.MenuProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.paging.LoadState
 import androidx.paging.PagingData
+import androidx.paging.log
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.crisacm.xmlpaging3.R
@@ -22,8 +25,10 @@ import com.github.crisacm.xmlpaging3.presentation.main.adapter.ReposLoadStateAda
 import com.github.crisacm.xmlpaging3.presentation.main.viewModel.GithubViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -32,9 +37,6 @@ class MainActivity : AppCompatActivity() {
   private lateinit var binding: ActivityMainBinding
 
   private val viewModel by viewModels<GithubViewModel>()
-
-  @Inject
-  lateinit var githubApi: GithubApi
 
   private val adapter by lazy { ReposAdapter() }
 
@@ -47,7 +49,7 @@ class MainActivity : AppCompatActivity() {
 
     setSupportActionBar(binding.toolbar)
     supportActionBar?.setDisplayShowTitleEnabled(true)
-    supportActionBar?.title = "Github Repositories"
+    supportActionBar?.title = getString(R.string.github_repositories)
 
     addMenuProvider(object : MenuProvider {
       override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
@@ -55,9 +57,8 @@ class MainActivity : AppCompatActivity() {
       }
 
       override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-        if (menuItem.itemId == R.id.action_reload) {
-          Toast.makeText(this@MainActivity, "Reload data", Toast.LENGTH_SHORT).show()
-          searchByUsername(binding.searchView.query.toString())
+        if (menuItem.itemId == R.id.action_clear) {
+          clearData()
         }
 
         return true
@@ -76,6 +77,23 @@ class MainActivity : AppCompatActivity() {
       footer = ReposLoadStateAdapter { adapter.retry() }
     )
 
+    lifecycleScope.launch {
+      adapter.loadStateFlow
+        .distinctUntilChanged()
+        .collect { ls ->
+          logI("LoadState: $ls")
+          logI("Count: ${adapter.itemCount}")
+
+          if (ls.refresh is LoadState.NotLoading && ls.append.endOfPaginationReached && adapter.itemCount < 1) {
+            manageRecyclerStates(RecyclerStates.ERROR)
+          }
+
+          if (ls.refresh is LoadState.NotLoading && adapter.itemCount > 1) {
+            manageRecyclerStates(RecyclerStates.LOADED)
+          }
+        }
+    }
+
     binding.buttonToggleGroup.addOnButtonCheckedListener { _, _, isChecked ->
       if (isChecked) clearData()
     }
@@ -88,11 +106,13 @@ class MainActivity : AppCompatActivity() {
 
       override fun onQueryTextChange(newText: String?): Boolean = true
     })
+
+    manageRecyclerStates(RecyclerStates.EMPTY)
   }
 
   private fun clearData() {
     lifecycleScope.launch {
-      binding.textEmpty.visibility = View.VISIBLE
+      manageRecyclerStates(RecyclerStates.EMPTY)
       adapter.submitData(PagingData.empty())
     }
   }
@@ -100,28 +120,77 @@ class MainActivity : AppCompatActivity() {
   private fun searchByUsername(username: String) {
     queryJob?.cancel()
     queryJob = lifecycleScope.launch {
+      manageRecyclerStates(RecyclerStates.LOADING)
       adapter.submitData(PagingData.empty())
 
       if (binding.buttonRemote.isChecked) {
         viewModel.fetchRepos(username).distinctUntilChanged().collectLatest {
           adapter.submitData(it)
-          binding.textEmpty.visibility = if (adapter.snapshot().isEmpty()) View.VISIBLE else View.GONE
+          adapter.loadStateFlow.collect { ls ->
+            if (ls.refresh is LoadState.NotLoading && ls.append.endOfPaginationReached && adapter.itemCount < 1) {
+              manageRecyclerStates(RecyclerStates.EMPTY)
+            } else {
+              manageRecyclerStates(RecyclerStates.LOADED)
+            }
+          }
         }
       }
 
       if (binding.buttonLocal.isChecked) {
         viewModel.getRepos(username).distinctUntilChanged().collectLatest {
           adapter.submitData(it)
-          binding.textEmpty.visibility = if (adapter.snapshot().isEmpty()) View.VISIBLE else View.GONE
         }
       }
 
       if (binding.buttonRemoteLocal.isChecked) {
         viewModel.fetchGetRepos(username).distinctUntilChanged().collectLatest {
           adapter.submitData(it)
-          binding.textEmpty.visibility = if (adapter.snapshot().isEmpty()) View.VISIBLE else View.GONE
+          manageRecyclerStates(RecyclerStates.LOADED)
         }
       }
     }
+  }
+
+  private fun manageRecyclerStates(states: RecyclerStates) {
+    when (states) {
+      RecyclerStates.LOADING -> {
+        binding.progressBar.visibility = View.VISIBLE
+        binding.textError.visibility = View.GONE
+        binding.textEmpty.visibility = View.GONE
+      }
+
+      RecyclerStates.LOADED -> {
+        binding.progressBar.visibility = View.GONE
+        binding.textError.visibility = View.GONE
+        binding.textEmpty.visibility = View.GONE
+      }
+
+      RecyclerStates.ERROR -> {
+        binding.progressBar.visibility = View.GONE
+        binding.textError.visibility = View.VISIBLE
+        binding.textEmpty.visibility = View.GONE
+      }
+
+      RecyclerStates.EMPTY -> {
+        binding.progressBar.visibility = View.GONE
+        binding.textError.visibility = View.GONE
+        binding.textEmpty.visibility = View.VISIBLE
+      }
+    }
+  }
+
+  enum class RecyclerStates {
+    LOADING,
+    LOADED,
+    ERROR,
+    EMPTY
+  }
+
+  private fun logI(msg: String) {
+    Log.i("Testing:I", msg)
+  }
+
+  private fun logE(msg: String) {
+    Log.e("Testing:E", msg)
   }
 }
