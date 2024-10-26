@@ -1,8 +1,9 @@
 plugins {
   alias(libs.plugins.android.application)
   alias(libs.plugins.jetbrains.kotlin.android)
-  id("com.google.dagger.hilt.android")
-  id("kotlin-kapt")
+  alias(libs.plugins.hilt)
+  // alias(libs.plugins.jetbrains.kotlin.kapt)
+  alias(libs.plugins.ksp)
 }
 
 android {
@@ -26,20 +27,23 @@ android {
     }
   }
   compileOptions {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
   }
   kotlinOptions {
-    jvmTarget = "1.8"
+    jvmTarget = JavaVersion.VERSION_17.toString()
   }
   buildFeatures {
     viewBinding = true
   }
 }
 
+/*
 kapt {
   correctErrorTypes = true
+  useBuildCache = true
 }
+*/
 
 dependencies {
 
@@ -53,18 +57,22 @@ dependencies {
   androidTestImplementation(libs.androidx.junit)
   androidTestImplementation(libs.androidx.espresso.core)
 
+  // Retorift
   implementation("com.squareup.retrofit2:retrofit:2.11.0")
   implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
   implementation("com.squareup.retrofit2:converter-moshi:2.11.0")
   implementation("com.squareup.moshi:moshi-kotlin:1.15.1")
 
+  // Paging
   implementation("androidx.paging:paging-runtime-ktx:3.3.2")
 
+  // Hilt
   implementation("com.google.dagger:hilt-android:2.51.1")
-  kapt("com.google.dagger:hilt-android-compiler:2.51")
+  ksp("com.google.dagger:hilt-android-compiler:2.51")
 
+  // Room
   implementation("androidx.room:room-runtime:2.6.1")
   implementation("androidx.room:room-ktx:2.6.1")
-  kapt("androidx.room:room-compiler:2.6.1")
+  ksp("androidx.room:room-compiler:2.6.1")
   implementation("androidx.room:room-paging:2.6.1")
 }
