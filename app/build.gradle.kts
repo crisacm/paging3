@@ -1,9 +1,13 @@
+import io.gitlab.arturbosch.detekt.Detekt
+import org.jlleitschuh.gradle.ktlint.reporter.ReporterType
+
 plugins {
   alias(libs.plugins.android.application)
   alias(libs.plugins.jetbrains.kotlin.android)
   alias(libs.plugins.hilt)
-  // alias(libs.plugins.jetbrains.kotlin.kapt)
   alias(libs.plugins.ksp)
+  alias(libs.plugins.detekt)
+  alias(libs.plugins.ktlint)
 }
 
 android {
@@ -38,12 +42,58 @@ android {
   }
 }
 
-/*
-kapt {
-  correctErrorTypes = true
-  useBuildCache = true
+// Config detekt
+detekt {
+  baseline = file("$rootDir/config/detekt/detekt-baseline.xml")
 }
-*/
+
+// Create custom detekt task
+tasks.register("detektProject", Detekt::class) {
+  val autoFix = project.hasProperty("detektAutoFix")
+  autoCorrect = autoFix
+
+  description = "Overrides current detekt task to execute same config in all modules."
+  buildUponDefaultConfig = true
+  ignoreFailures = false
+  parallel = true
+  setSource(file(projectDir))
+  baseline.set(file("$rootDir/config/detekt/detekt-baseline.xml"))
+  config.setFrom(files("$rootDir/config/detekt/detekt.yml"))
+  include("**/*.kt", "**/*.kts")
+  exclude("**/resources/**", "**/build/**")
+  reports {
+    // Enable/Disable HTML report (default: true)
+    md.required.set(false)
+    txt.required.set(false)
+    sarif.required.set(false)
+    xml.required.set(true)
+    html.required.set(true)
+  }
+}
+
+ktlint {
+  android.set(true)
+  debug.set(true)
+  outputToConsole.set(false)
+  ignoreFailures.set(false)
+  enableExperimentalRules.set(true)
+  baseline.set(file("$rootDir/config/ktlint/baseline.xml"))
+  disabledRules.addAll("final-newline", "no-wildcard-imports")
+  reporters {
+    reporter(ReporterType.HTML)
+    reporter(ReporterType.JSON)
+  }
+  filter {
+    exclude("**/generated/**")
+    include("**/kotlin/**")
+  }
+}
+
+// Analise detekt and ktlint before build
+tasks
+  .getByPath("preBuild")
+  .dependsOn("detektProject")
+  .dependsOn("ktlintCheck")
 
 dependencies {
 
@@ -57,7 +107,7 @@ dependencies {
   androidTestImplementation(libs.androidx.junit)
   androidTestImplementation(libs.androidx.espresso.core)
 
-  // Retorift
+  // Retrofit, Moshi, Okhtpp
   implementation("com.squareup.retrofit2:retrofit:2.11.0")
   implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
   implementation("com.squareup.retrofit2:converter-moshi:2.11.0")

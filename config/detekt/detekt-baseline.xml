@@ -1,0 +1,15 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues></ManuallySuppressedIssues>
+  <CurrentIssues>
+    <ID>NewLineAtEndOfFile:AppDatabase.kt$com.github.crisacm.xmlpaging3.data.local.AppDatabase.kt</ID>
+    <ID>NewLineAtEndOfFile:ExampleUnitTest.kt$com.github.crisacm.xmlpaging3.ExampleUnitTest.kt</ID>
+    <ID>NewLineAtEndOfFile:GithubRepoPagingSources.kt$com.github.crisacm.xmlpaging3.data.api.pagingSource.GithubRepoPagingSources.kt</ID>
+    <ID>NewLineAtEndOfFile:MainActivity.kt$com.github.crisacm.xmlpaging3.presentation.main.MainActivity.kt</ID>
+    <ID>NewLineAtEndOfFile:RepoModule.kt$com.github.crisacm.xmlpaging3.di.RepoModule.kt</ID>
+    <ID>TooGenericExceptionCaught:GithubRepoPagingSources.kt$GithubRepoPagingSources$e: Exception</ID>
+    <ID>UnusedPrivateMember:MainActivity.kt$MainActivity$private fun logE(msg: String)</ID>
+    <ID>UnusedPrivateMember:MainActivity.kt$MainActivity$private fun logI(msg: String)</ID>
+    <ID>WildcardImport:ExampleUnitTest.kt$import org.junit.Assert.*</ID>
+  </CurrentIssues>
+</SmellBaseline>

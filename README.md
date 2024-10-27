@@ -17,3 +17,5 @@ Implementing Paging3 with Flow, Retrofit and Room database
 - Flow, ViewModel
 - Retrofit
 - Room
+- Detekt
+- Ktlint

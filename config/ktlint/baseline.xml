@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<baseline version="1.0">
+    <file name="build.gradle.kts">
+        <error line="1" column="1" source="standard:final-newline" />
+        <error line="6" column="13" source="standard:chain-method-continuation" />
+        <error line="6" column="21" source="standard:chain-method-continuation" />
+        <error line="6" column="31" source="standard:chain-method-continuation" />
+        <error line="6" column="38" source="standard:chain-method-continuation" />
+        <error line="88" column="6" source="standard:chain-method-continuation" />
+    </file>
+    <file name="src/androidTest/java/com/github/crisacm/xmlpaging3/ExampleInstrumentedTest.kt">
+        <error line="1" column="1" source="standard:final-newline" />
+        <error line="3" column="1" source="standard:import-ordering" />
+        <error line="9" column="1" source="standard:no-wildcard-imports" />
+    </file>
+    <file name="src/main/java/com/github/crisacm/xmlpaging3/data/api/models/RepoResponses.kt">
+        <error line="10" column="47" source="standard:trailing-comma-on-declaration-site" />
+        <error line="15" column="48" source="standard:trailing-comma-on-declaration-site" />
+    </file>
+    <file name="src/main/java/com/github/crisacm/xmlpaging3/data/api/pagingSource/GithubRepoPagingSources.kt">
+        <error line="1" column="1" source="standard:final-newline" />
+        <error line="16" column="31" source="standard:trailing-comma-on-declaration-site" />
+        <error line="18" column="1" source="standard:no-empty-first-line-in-class-body" />
+        <error line="26" column="77" source="standard:function-expression-body" />
+        <error line="43" column="61" source="standard:trailing-comma-on-call-site" />
+    </file>
+    <file name="src/main/java/com/github/crisacm/xmlpaging3/data/api/service/GithubApi.kt">
+        <error line="9" column="1" source="standard:no-empty-first-line-in-class-body" />
+        <error line="14" column="33" source="standard:trailing-comma-on-declaration-site" />
+    </file>
+    <file name="src/main/java/com/github/crisacm/xmlpaging3/data/local/AppDatabase.kt">
+        <error line="1" column="1" source="standard:final-newline" />
+        <error line="16" column="22" source="standard:trailing-comma-on-call-site" />
+        <error line="18" column="23" source="standard:trailing-comma-on-call-site" />
+        <error line="22" column="3" source="standard:blank-line-before-declaration" />
+        <error line="28" column="17" source="standard:property-naming" />
+        <error line="36" column="11" source="standard:chain-method-continuation" />
+        <error line="39" column="22" source="standard:trailing-comma-on-call-site" />
+    </file>
+    <file name="src/main/java/com/github/crisacm/xmlpaging3/data/local/daos/RemoteKeysDao.kt">
+        <error line="11" column="1" source="standard:no-empty-first-line-in-class-body" />
+    </file>
+    <file name="src/main/java/com/github/crisacm/xmlpaging3/data/local/daos/RepoDao.kt">
+        <error line="12" column="1" source="standard:no-empty-first-line-in-class-body" />
+        <error line="23" column="16" source="standard:function-signature" />
+        <error line="23" column="34" source="standard:function-signature" />
+        <error line="23" column="46" source="standard:function-signature" />
+        <error line="23" column="57" source="standard:function-signature" />
+    </file>
+    <file name="src/main/java/com/github/crisacm/xmlpaging3/data/local/entities/RemoteKeys.kt">
+        <error line="10" column="20" source="standard:trailing-comma-on-declaration-site" />
+    </file>
+    <file name="src/main/java/com/github/crisacm/xmlpaging3/data/local/entities/RepoEntity.kt">
+        <error line="10" column="23" source="standard:trailing-comma-on-declaration-site" />
+    </file>
+    <file name="src/main/java/com/github/crisacm/xmlpaging3/data/mapper/RepoMapper.kt">
+        <error line="15" column="33" source="standard:function-expression-body" />
+    </file>
+    <file name="src/main/java/com/github/crisacm/xmlpaging3/data/repo/GithubRepositoryImpl.kt">
+        <error line="17" column="27" source="standard:annotation" />
+        <error line="17" column="35" source="standard:annotation" />
+        <error line="19" column="39" source="standard:trailing-comma-on-declaration-site" />
+        <error line="21" column="1" source="standard:no-empty-first-line-in-class-body" />
+        <error line="22" column="81" source="standard:multiline-expression-wrapping" />
+        <error line="22" column="81" source="standard:function-signature" />
+        <error line="24" column="41" source="standard:trailing-comma-on-call-site" />
+        <error line="27" column="79" source="standard:multiline-expression-wrapping" />
+        <error line="27" column="79" source="standard:function-signature" />
+        <error line="29" column="41" source="standard:trailing-comma-on-call-site" />
+    </file>
+    <file name="src/main/java/com/github/crisacm/xmlpaging3/di/DataModule.kt">
+        <error line="23" column="1" source="standard:no-empty-first-line-in-class-body" />
+        <error line="27" column="17" source="standard:chain-method-continuation" />
+        <error line="31" column="10" source="standard:trailing-comma-on-call-site" />
+        <error line="33" column="7" source="standard:chain-method-continuation" />
+        <error line="38" column="17" source="standard:chain-method-continuation" />
+        <error line="45" column="23" source="standard:function-signature" />
+        <error line="45" column="51" source="standard:function-signature" />
+        <error line="45" column="63" source="standard:function-signature" />
+        <error line="45" column="75" source="standard:function-expression-body" />
+        <error line="46" column="20" source="standard:chain-method-continuation" />
+        <error line="58" column="41" source="standard:trailing-comma-on-declaration-site" />
+    </file>
+    <file name="src/main/java/com/github/crisacm/xmlpaging3/di/RepoModule.kt">
+        <error line="1" column="1" source="standard:final-newline" />
+        <error line="13" column="1" source="standard:no-empty-first-line-in-class-body" />
+    </file>
+    <file name="src/main/java/com/github/crisacm/xmlpaging3/domain/model/Repo.kt">
+        <error line="4" column="19" source="standard:trailing-comma-on-declaration-site" />
+    </file>
+    <file name="src/main/java/com/github/crisacm/xmlpaging3/domain/repo/GithubRepository.kt">
+        <error line="8" column="1" source="standard:no-empty-first-line-in-class-body" />
+    </file>
+    <file name="src/main/java/com/github/crisacm/xmlpaging3/presentation/main/MainActivity.kt">
+        <error line="1" column="1" source="standard:final-newline" />
+        <error line="45" column="21" source="standard:multiline-expression-wrapping" />
+        <error line="46" column="33" source="standard:function-signature" />
+        <error line="46" column="45" source="standard:function-signature" />
+        <error line="46" column="71" source="standard:function-signature" />
+        <error line="63" column="39" source="standard:trailing-comma-on-call-site" />
+        <error line="64" column="8" source="standard:trailing-comma-on-call-site" />
+        <error line="66" column="36" source="standard:multiline-expression-wrapping" />
+        <error line="68" column="57" source="standard:trailing-comma-on-call-site" />
+        <error line="72" column="14" source="standard:chain-method-continuation" />
+        <error line="92" column="47" source="standard:multiline-expression-wrapping" />
+        <error line="114" column="16" source="standard:multiline-expression-wrapping" />
+        <error line="164" column="10" source="standard:trailing-comma-on-declaration-site" />
+    </file>
+    <file name="src/main/java/com/github/crisacm/xmlpaging3/presentation/main/adapter/ReposAdapter.kt">
+        <error line="12" column="1" source="standard:no-empty-first-line-in-class-body" />
+        <error line="13" column="35" source="standard:function-signature" />
+        <error line="13" column="54" source="standard:function-signature" />
+        <error line="13" column="67" source="standard:function-signature" />
+        <error line="13" column="71" source="standard:multiline-expression-wrapping" />
+        <error line="13" column="71" source="standard:function-signature" />
+        <error line="14" column="81" source="standard:trailing-comma-on-call-site" />
+        <error line="17" column="33" source="standard:function-signature" />
+        <error line="17" column="53" source="standard:function-signature" />
+        <error line="17" column="66" source="standard:function-signature" />
+        <error line="22" column="42" source="standard:trailing-comma-on-declaration-site" />
+        <error line="24" column="14" source="standard:function-signature" />
+        <error line="24" column="26" source="standard:function-signature" />
+        <error line="24" column="39" source="standard:function-signature" />
+        <error line="24" column="43" source="standard:multiline-expression-wrapping" />
+        <error line="24" column="43" source="standard:function-signature" />
+        <error line="32" column="30" source="standard:multiline-expression-wrapping" />
+        <error line="33" column="36" source="standard:function-signature" />
+        <error line="33" column="51" source="standard:function-signature" />
+        <error line="33" column="64" source="standard:function-signature" />
+        <error line="33" column="76" source="standard:function-signature" />
+        <error line="36" column="39" source="standard:function-signature" />
+        <error line="36" column="54" source="standard:function-signature" />
+        <error line="36" column="67" source="standard:function-signature" />
+        <error line="36" column="79" source="standard:function-signature" />
+    </file>
+    <file name="src/main/java/com/github/crisacm/xmlpaging3/presentation/main/adapter/ReposLoadStateAdapter.kt">
+        <error line="12" column="32" source="standard:trailing-comma-on-declaration-site" />
+        <error line="14" column="1" source="standard:no-empty-first-line-in-class-body" />
+        <error line="15" column="33" source="standard:function-signature" />
+        <error line="15" column="53" source="standard:function-signature" />
+        <error line="15" column="73" source="standard:function-signature" />
+        <error line="17" column="35" source="standard:function-signature" />
+        <error line="17" column="54" source="standard:function-signature" />
+        <error line="17" column="74" source="standard:function-signature" />
+        <error line="17" column="78" source="standard:multiline-expression-wrapping" />
+        <error line="17" column="78" source="standard:function-signature" />
+        <error line="19" column="10" source="standard:trailing-comma-on-call-site" />
+        <error line="24" column="22" source="standard:trailing-comma-on-declaration-site" />
+        <error line="26" column="1" source="standard:no-empty-first-line-in-class-body" />
+        <error line="31" column="38" source="standard:multiline-expression-wrapping" />
+        <error line="31" column="38" source="standard:function-signature" />
+    </file>
+    <file name="src/main/java/com/github/crisacm/xmlpaging3/presentation/main/viewModel/GithubViewModel.kt">
+        <error line="14" column="22" source="standard:annotation" />
+        <error line="14" column="30" source="standard:annotation" />
+        <error line="15" column="43" source="standard:trailing-comma-on-declaration-site" />
+        <error line="17" column="1" source="standard:no-empty-first-line-in-class-body" />
+        <error line="19" column="15" source="standard:chain-method-continuation" />
+        <error line="23" column="15" source="standard:chain-method-continuation" />
+    </file>
+    <file name="src/test/java/com/github/crisacm/xmlpaging3/ExampleUnitTest.kt">
+        <error line="1" column="1" source="standard:final-newline" />
+        <error line="3" column="1" source="standard:import-ordering" />
+        <error line="5" column="1" source="standard:no-wildcard-imports" />
+    </file>
+</baseline>
