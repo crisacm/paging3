@@ -6,7 +6,7 @@
         android:id="@+id/action_clear"
         android:icon="@drawable/ic_clear"
         android:iconTint="@android:color/white"
-        android:title="@string/action_reload"
-        app:showAsAction="always"
+        android:title="@string/clear_data"
+        app:showAsAction="collapseActionView"
         tools:ignore="UnusedAttribute" />
 </menu>

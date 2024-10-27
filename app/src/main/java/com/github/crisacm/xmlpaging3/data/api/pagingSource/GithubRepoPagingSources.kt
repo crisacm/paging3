@@ -26,8 +26,16 @@ class GithubRepoPagingSources(
   override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Repo> {
     return try {
       val page = params.key ?: INITIAL_PAGE
+
+      // Load data from database first
       val response = api.fetchRepos(username, page, params.loadSize)
-      appDatabase.repoDao().insert(response.map { it.toEntity() })
+      if (response.isNotEmpty()) {
+        response
+          .map { it.toEntity() }
+          .onEach {
+            appDatabase.repoDao().insert(it)
+          }
+      }
 
       LoadResult.Page(
         data = response.map { it.toDomain() },

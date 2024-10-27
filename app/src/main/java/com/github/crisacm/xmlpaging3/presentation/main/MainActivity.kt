@@ -6,7 +6,6 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView.OnQueryTextListener
@@ -14,23 +13,18 @@ import androidx.core.view.MenuProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import androidx.paging.PagingData
-import androidx.paging.log
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.crisacm.xmlpaging3.R
-import com.github.crisacm.xmlpaging3.data.api.service.GithubApi
 import com.github.crisacm.xmlpaging3.databinding.ActivityMainBinding
 import com.github.crisacm.xmlpaging3.presentation.main.adapter.ReposAdapter
 import com.github.crisacm.xmlpaging3.presentation.main.adapter.ReposLoadStateAdapter
 import com.github.crisacm.xmlpaging3.presentation.main.viewModel.GithubViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -49,7 +43,6 @@ class MainActivity : AppCompatActivity() {
 
     setSupportActionBar(binding.toolbar)
     supportActionBar?.setDisplayShowTitleEnabled(true)
-    supportActionBar?.title = getString(R.string.github_repositories)
 
     addMenuProvider(object : MenuProvider {
       override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
@@ -81,8 +74,8 @@ class MainActivity : AppCompatActivity() {
       adapter.loadStateFlow
         .distinctUntilChanged()
         .collect { ls ->
-          logI("LoadState: $ls")
-          logI("Count: ${adapter.itemCount}")
+          val txtCount = "Count: ${adapter.itemCount}"
+          binding.textCount.text = txtCount
 
           if (ls.refresh is LoadState.NotLoading && ls.append.endOfPaginationReached && adapter.itemCount < 1) {
             manageRecyclerStates(RecyclerStates.ERROR)
@@ -111,8 +104,9 @@ class MainActivity : AppCompatActivity() {
   }
 
   private fun clearData() {
+    manageRecyclerStates(RecyclerStates.EMPTY)
+    binding.searchView.setQuery("", false)
     lifecycleScope.launch {
-      manageRecyclerStates(RecyclerStates.EMPTY)
       adapter.submitData(PagingData.empty())
     }
   }
@@ -123,29 +117,15 @@ class MainActivity : AppCompatActivity() {
       manageRecyclerStates(RecyclerStates.LOADING)
       adapter.submitData(PagingData.empty())
 
-      if (binding.buttonRemote.isChecked) {
+      if (binding.buttonRemoteLocal.isChecked) {
         viewModel.fetchRepos(username).distinctUntilChanged().collectLatest {
           adapter.submitData(it)
-          adapter.loadStateFlow.collect { ls ->
-            if (ls.refresh is LoadState.NotLoading && ls.append.endOfPaginationReached && adapter.itemCount < 1) {
-              manageRecyclerStates(RecyclerStates.EMPTY)
-            } else {
-              manageRecyclerStates(RecyclerStates.LOADED)
-            }
-          }
         }
       }
 
       if (binding.buttonLocal.isChecked) {
         viewModel.getRepos(username).distinctUntilChanged().collectLatest {
           adapter.submitData(it)
-        }
-      }
-
-      if (binding.buttonRemoteLocal.isChecked) {
-        viewModel.fetchGetRepos(username).distinctUntilChanged().collectLatest {
-          adapter.submitData(it)
-          manageRecyclerStates(RecyclerStates.LOADED)
         }
       }
     }

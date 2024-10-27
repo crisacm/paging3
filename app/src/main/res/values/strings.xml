@@ -7,4 +7,6 @@
     <string name="not_are_data_to_show">Not are data to show</string>
     <string name="github_repositories">Github Repositories</string>
     <string name="no_matches_to_the_user_name">No matches to the user name</string>
+    <string name="clear_data">Clear Data</string>
+    <string name="count_0">Count 0</string>
 </resources>
