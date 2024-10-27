@@ -13,18 +13,16 @@ private const val INITIAL_PAGE = 1
 class GithubRepoPagingSources(
   private val api: GithubApi,
   private val appDatabase: AppDatabase,
-  private val username: String
+  private val username: String,
 ) : PagingSource<Int, Repo>() {
-
-  override fun getRefreshKey(state: PagingState<Int, Repo>): Int? {
-    return state.anchorPosition?.let { anchorPosition ->
+  override fun getRefreshKey(state: PagingState<Int, Repo>): Int? =
+    state.anchorPosition?.let { anchorPosition ->
       state.closestPageToPosition(anchorPosition)?.prevKey?.plus(1)
         ?: state.closestPageToPosition(anchorPosition)?.nextKey?.minus(1)
     }
-  }
 
-  override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Repo> {
-    return try {
+  override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Repo> =
+    try {
       val page = params.key ?: INITIAL_PAGE
 
       // Load data from database first
@@ -40,10 +38,9 @@ class GithubRepoPagingSources(
       LoadResult.Page(
         data = response.map { it.toDomain() },
         prevKey = if (page == INITIAL_PAGE) null else page - 1,
-        nextKey = if (response.isEmpty()) null else page + 1
+        nextKey = if (response.isEmpty()) null else page + 1,
       )
     } catch (e: Exception) {
       LoadResult.Error(e)
     }
-  }
 }

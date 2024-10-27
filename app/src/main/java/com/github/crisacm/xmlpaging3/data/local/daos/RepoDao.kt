@@ -9,7 +9,6 @@ import com.github.crisacm.xmlpaging3.data.local.entities.RepoEntity
 
 @Dao
 interface RepoDao {
-
   @Insert(onConflict = OnConflictStrategy.REPLACE)
   suspend fun insert(repo: RepoEntity)
 
@@ -20,7 +19,11 @@ interface RepoDao {
   suspend fun clearRepos()
 
   @Query("SELECT * FROM repos WHERE username = :username ORDER BY id ASC LIMIT :limit OFFSET :offset")
-  fun getAllBy(username: String, limit: Int, offset: Int): List<RepoEntity>
+  fun getAllBy(
+    username: String,
+    limit: Int,
+    offset: Int,
+  ): List<RepoEntity>
 
   @Query("SELECT * FROM repos WHERE username = :username ORDER BY id ASC")
   fun getAllByRaw(username: String): List<RepoEntity>

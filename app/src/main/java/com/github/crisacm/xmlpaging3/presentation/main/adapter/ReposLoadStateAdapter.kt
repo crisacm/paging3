@@ -9,33 +9,38 @@ import androidx.recyclerview.widget.RecyclerView
 import com.github.crisacm.xmlpaging3.databinding.ItemReposLoadStateFooterBinding
 
 class ReposLoadStateAdapter(
-  private val retry: () -> Unit
+  private val retry: () -> Unit,
 ) : LoadStateAdapter<ReposLoadStateAdapter.ViewHolder>() {
+  override fun onBindViewHolder(
+    holder: ViewHolder,
+    loadState: LoadState,
+  ) = holder.bind(loadState)
 
-  override fun onBindViewHolder(holder: ViewHolder, loadState: LoadState) = holder.bind(loadState)
-
-  override fun onCreateViewHolder(parent: ViewGroup, loadState: LoadState) = ViewHolder(
+  override fun onCreateViewHolder(
+    parent: ViewGroup,
+    loadState: LoadState,
+  ) = ViewHolder(
     ItemReposLoadStateFooterBinding.inflate(LayoutInflater.from(parent.context), parent, false),
-    retry
+    retry,
   )
 
   class ViewHolder(
     private val binding: ItemReposLoadStateFooterBinding,
-    retry: () -> Unit
+    retry: () -> Unit,
   ) : RecyclerView.ViewHolder(binding.root) {
-
     init {
       binding.retryButton.setOnClickListener { retry() }
     }
 
-    fun bind(loadState: LoadState) = with(binding) {
-      if (loadState is LoadState.Error) {
-        errorMsg.text = loadState.error.localizedMessage
-      }
+    fun bind(loadState: LoadState) =
+      with(binding) {
+        if (loadState is LoadState.Error) {
+          errorMsg.text = loadState.error.localizedMessage
+        }
 
-      progressBar.isVisible = loadState is LoadState.Loading
-      retryButton.isVisible = loadState is LoadState.Error
-      errorMsg.isVisible = loadState is LoadState.Error
-    }
+        progressBar.isVisible = loadState is LoadState.Loading
+        retryButton.isVisible = loadState is LoadState.Error
+        errorMsg.isVisible = loadState is LoadState.Error
+      }
   }
 }

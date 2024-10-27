@@ -8,7 +8,6 @@ import com.github.crisacm.xmlpaging3.data.local.entities.RemoteKeys
 
 @Dao
 interface RemoteKeysDao {
-
   @Insert(onConflict = OnConflictStrategy.REPLACE)
   suspend fun insert(list: List<RemoteKeys>)
 

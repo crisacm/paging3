@@ -4,12 +4,21 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal">
 
+    <ImageView
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="8dp"
+        android:importantForAccessibility="no"
+        android:src="@drawable/ic_folder_open" />
+
     <TextView
         android:id="@+id/text_number"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textStyle="bold"
-        android:padding="12dp" />
+        android:padding="12dp"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/text_desc"

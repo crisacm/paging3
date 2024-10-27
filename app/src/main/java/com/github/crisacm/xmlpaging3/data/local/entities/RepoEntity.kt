@@ -7,5 +7,5 @@ import androidx.room.PrimaryKey
 data class RepoEntity(
   @PrimaryKey var id: String,
   var name: String,
-  var username: String
+  var username: String,
 )

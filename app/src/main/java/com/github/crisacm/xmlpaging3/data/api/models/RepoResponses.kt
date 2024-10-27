@@ -7,10 +7,10 @@ import com.squareup.moshi.JsonClass
 data class RepoResponses(
   @field:Json(name = "id") var id: String,
   @field:Json(name = "name") val name: String,
-  @field:Json(name = "owner") val owner: Owner
+  @field:Json(name = "owner") val owner: Owner,
 )
 
 @JsonClass(generateAdapter = true)
 data class Owner(
-  @field:Json(name = "login") val login: String
+  @field:Json(name = "login") val login: String,
 )

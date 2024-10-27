@@ -13,12 +13,13 @@ import com.github.crisacm.xmlpaging3.data.local.entities.RepoEntity
   version = 1,
   entities = [
     RemoteKeys::class,
-    RepoEntity::class
+    RepoEntity::class,
   ],
-  exportSchema = false
+  exportSchema = false,
 )
 abstract class AppDatabase : RoomDatabase() {
   abstract fun remoteKeysDao(): RemoteKeysDao
+
   abstract fun repoDao(): RepoDao
 
   companion object {
@@ -33,10 +34,11 @@ abstract class AppDatabase : RoomDatabase() {
       }
 
     private fun buildDatabase(context: Context) =
-      Room.databaseBuilder(
-        context.applicationContext,
-        AppDatabase::class.java,
-        DATABASE_NAME
-      ).build()
+      Room
+        .databaseBuilder(
+          context.applicationContext,
+          AppDatabase::class.java,
+          DATABASE_NAME,
+        ).build()
   }
 }

@@ -20,41 +20,43 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object DataModule {
-
   @Provides
   @Singleton
   fun providesOkHttpClient(): OkHttpClient =
-    OkHttpClient.Builder()
+    OkHttpClient
+      .Builder()
       .addInterceptor(
         HttpLoggingInterceptor { message: String? -> Log.v("Interceptor", message ?: "") }.apply {
           setLevel(HttpLoggingInterceptor.Level.BODY)
-        }
-      )
-      .build()
+        },
+      ).build()
 
   @Provides
   @Singleton
-  fun provideMoshiAdapter(): Moshi {
-    return Moshi.Builder()
+  fun provideMoshiAdapter(): Moshi =
+    Moshi
+      .Builder()
       .add(KotlinJsonAdapterFactory())
       .build()
-  }
 
   @Provides
   @Singleton
-  fun provideRetrofit(okHttpClient: OkHttpClient, moshi: Moshi): Retrofit {
-    return Retrofit.Builder()
+  fun provideRetrofit(
+    okHttpClient: OkHttpClient,
+    moshi: Moshi,
+  ): Retrofit =
+    Retrofit
+      .Builder()
       .client(okHttpClient)
       .baseUrl("https://api.github.com")
       .addConverterFactory(MoshiConverterFactory.create(moshi))
       .build()
-  }
 
   @Provides
   fun providesGithubApi(retrofit: Retrofit): GithubApi = retrofit.create(GithubApi::class.java)
 
   @Provides
   fun providesAppDatabase(
-    @ApplicationContext context: Context
+    @ApplicationContext context: Context,
   ): AppDatabase = AppDatabase.getInstance(context)
 }

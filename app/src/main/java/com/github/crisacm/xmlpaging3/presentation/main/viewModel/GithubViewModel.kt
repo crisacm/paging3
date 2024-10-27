@@ -11,15 +11,18 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 @HiltViewModel
-class GithubViewModel @Inject constructor(
-  private val repository: GithubRepository
-) : ViewModel() {
+class GithubViewModel
+  @Inject
+  constructor(
+    private val repository: GithubRepository,
+  ) : ViewModel() {
+    fun fetchRepos(username: String): Flow<PagingData<Repo>> =
+      repository
+        .fetchReposByUsername(username)
+        .cachedIn(viewModelScope)
 
-  fun fetchRepos(username: String): Flow<PagingData<Repo>> =
-    repository.fetchReposByUsername(username)
-      .cachedIn(viewModelScope)
-
-  fun getRepos(username: String): Flow<PagingData<Repo>> =
-    repository.getReposByUsername(username)
-      .cachedIn(viewModelScope)
-}
+    fun getRepos(username: String): Flow<PagingData<Repo>> =
+      repository
+        .getReposByUsername(username)
+        .cachedIn(viewModelScope)
+  }

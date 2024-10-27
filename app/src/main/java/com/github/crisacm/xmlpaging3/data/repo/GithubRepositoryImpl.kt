@@ -14,18 +14,21 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
-class GithubRepositoryImpl @Inject constructor(
-  private val api: GithubApi,
-  private val appDatabase: AppDatabase
-) : GithubRepository {
+class GithubRepositoryImpl
+  @Inject
+  constructor(
+    private val api: GithubApi,
+    private val appDatabase: AppDatabase,
+  ) : GithubRepository {
+    override fun fetchReposByUsername(username: String): Flow<PagingData<Repo>> =
+      Pager(
+        pagingSourceFactory = { GithubRepoPagingSources(api, appDatabase, username) },
+        config = PagingConfig(pageSize = 10),
+      ).flow
 
-  override fun fetchReposByUsername(username: String): Flow<PagingData<Repo>> = Pager(
-    pagingSourceFactory = { GithubRepoPagingSources(api, appDatabase, username) },
-    config = PagingConfig(pageSize = 10)
-  ).flow
-
-  override fun getReposByUsername(username: String): Flow<PagingData<Repo>> = Pager(
-    pagingSourceFactory = { appDatabase.repoDao().getAllByPS(username) },
-    config = PagingConfig(pageSize = 10)
-  ).flow.map { it.map { obj -> obj.toDomain() } }
-}
+    override fun getReposByUsername(username: String): Flow<PagingData<Repo>> =
+      Pager(
+        pagingSourceFactory = { appDatabase.repoDao().getAllByPS(username) },
+        config = PagingConfig(pageSize = 10),
+      ).flow.map { it.map { obj -> obj.toDomain() } }
+  }
